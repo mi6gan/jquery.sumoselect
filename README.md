@@ -167,7 +167,7 @@ The following settings are available now:
 
 - `selectAll` `(boolean)` To display select all check or not
 
-- `search` `(boolean)`  To enable searching in sumoselect (default is false).
+- `search` `(boolean)`  To enable searching in sumoselect (default is false). You may want to provide the search match function here as the following: `function(searchText, $optEl){...; return true; }`. Function should return a boolean that indicates the option matches a search string.
 
 - `searchText` `(string)`  placeholder for search input.
 

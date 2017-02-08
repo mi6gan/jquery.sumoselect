@@ -28,7 +28,7 @@
             triggerChangeCombined: true,  // im multi select mode wether to trigger change event on individual selection or combined selection.
             selectAll: false,             // to display select all button in multiselect mode.|| also select all will not be available on mobile devices.
 
-            search: false,                // to display input for filtering content. selectAlltext will be input text placeholder
+            search: false,                // to display input for filtering content. selectAlltext will be input text placeholder. You may want to provide the search match function here as the following: `function(searchText, $optEl){...; return true; }`. Function should return a boolean that indicates the option matches a search string. 
             searchText: 'Search...',      // placeholder for search input
             noMatch: 'No matches for "{0}"',
             prefix: '',                   // some prefix usually the field name. eg. '<b>Hello</b>'
@@ -251,10 +251,12 @@
                     O.ftxt.on('keyup.sumo',function(){
                         var hid = O.optDiv.find('ul.options li.opt').each(function(ix,e){
                             e = $(e);
-                            if(e.text().toLowerCase().indexOf(O.ftxt.val().toLowerCase()) > -1)
+                            if(typeof(settings.search)=='function' && settings.search(O.ftxt.val(), e.data('opt')) ||
+                               typeof(settings.search)!='function' && (e.text().toLowerCase().indexOf(O.ftxt.val().toLowerCase()) > -1)){
                                 e.removeClass('hidden');
-                            else
+                            } else {
                                 e.addClass('hidden');
+                            }
                         }).not('.hidden');
 
                         P.html(settings.noMatch.replace(/\{0\}/g, O.ftxt.val())).toggle(!hid.length);

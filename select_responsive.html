@@ -22,12 +22,12 @@
             window.searchSelAll = $('.search-box-open-up').SumoSelect({ csvDispCount: 3, selectAll:true, search: false, searchText:'Enter here.', up:true });
 
             window.groups_eg_g = $('.groups_eg_g').SumoSelect({selectAll:true, search:true });
-            window.selToText1 = $('.selToText1').SumoSelect({
+            window.selToText1 = $('.SelToText1').SumoSelect({
                 selToText: function($optEls, isMulti){
                     return $optEls.text().toUpperCase();
                 }
             });
-            window.selToText2 = $('.selToText2').SumoSelect({
+            window.selToText2 = $('.SelToText2').SumoSelect({
                 selToText: function($optEls, isMulti){
                     var text = '';
                     $optEls.each(function(i, el){
@@ -36,7 +36,25 @@
                     return text;
                 }
             });
-            //window.selToText2 = $('.selToText2').SumoSelect({ selToText: function($optEls, isMulti)})
+            window.searchMatchFn = $('.SearchMatchFn1').SumoSelect({
+                search: function(searchText, $optEl){
+                    searchTextLower = searchText.toLowerCase();
+                    if($optEl.text().toLowerCase().indexOf(searchTextLower) > -1){
+                        return true;
+                    }
+                    var match = false;
+                    ($optEl.data('tags')||'').split(' ').forEach(function(text, i){
+                        if(!text.trim().length){
+                            return;
+                        }
+                        if(text.toLowerCase().indexOf(searchTextLower) > -1){
+                            match = true;
+                            return false;
+                        }
+                    });
+                    return match;
+                }
+            });
         });
     </script>
     <style type="text/css">
@@ -482,7 +500,7 @@
     });
     </pre>
     </p>
-    <select name="somename" class="selToText1" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
+    <select name="somename" class="SelToText1" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
         <option disabled="disabled" selected="selected">disabled selected</option>
         <!--placeholder-->
         <option value="volvo">Volvo</option>
@@ -508,7 +526,7 @@
     });
     </pre>
     </p>
-    <select name="somename" class="selToText2" multiple="multiple" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
+    <select name="somename" class="SelToText2" multiple="multiple" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
         <option disabled="disabled" selected="selected">disabled selected</option>
         <!--placeholder-->
         <option value="volvo">Volvo</option>
@@ -516,7 +534,40 @@
         <option value="mercedes">Mercedes</option>
         <option value="audi">Audi</option>
     </select>
-    &nbsp;&nbsp;&nbsp;
+    <h1>With the search match function</h1>
+    <p>
+    <b>Match by `data-tags` attribute (try to type A4 or S60)</b>
+    <pre>
+    $('.SearchMatchFn1').SumoSelect({
+        search: function(searchText, $optEl){
+            searchTextLower = searchText.toLowerCase();
+            if($optEl.text().toLowerCase().indexOf(searchTextLower) > -1){
+                return true;
+            }
+            var match = false;
+            ($optEl.data('tags')||'').split(' ').forEach(function(text, i){
+                if(!text.trim().length){
+                    return;
+                }
+                if(text.toLowerCase().indexOf(searchTextLower) > -1){
+                    match = true;
+                    return false;
+                }
+            });
+            return match;
+        }
+    });
+    </pre>
+    </p>
+    <select name="somename" class="SearchMatchFn1" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
+        <option disabled="disabled" selected="selected">disabled selected</option>
+        <!--placeholder-->
+        <option value="volvo" data-tags="S60 S90 V60">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi" data-tags="A4 A6">Audi</option>
+    </select>
+
     <br />
     <br />
     <br />  <br />
