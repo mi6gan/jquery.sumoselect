@@ -34,7 +34,8 @@
             prefix: '',                   // some prefix usually the field name. eg. '<b>Hello</b>'
             locale: ['OK', 'Cancel', 'Select All'],  // all text that is used. don't change the index.
             up: false,                    // set true to open upside.
-            selToText: null               // function that transforms selected option elements to placeholder: function($selEls, isMulti){...}
+            selToText: null,              // function that transforms selected option elements to placeholder: function($selEls, isMulti){...}
+            optToOutput: null             // function that transforms original option element to the list view (can be an html): function($optEl){...}
         }, options);
 
         var ret = this.each(function () {
@@ -138,9 +139,12 @@
                 createLi: function (opt, d) {
                     var O = this;
 
-                    if(!opt.attr('value'))opt.attr('value',opt.val());
-                                                                                    // todo: remove this data val 
-                    li = $('<li class="opt"><label>' + opt.text() + '</label></li>');//.data('val',opt.val());
+                    if(!opt.attr('value')){
+                        opt.attr('value', opt.val()); // TODO: remove this data val 
+                    }
+                    li = $('<li class="opt"><label>' + (
+                        typeof(settings.optToOutput)=='function' ? settings.optToOutput(opt) : opt.text()
+                    ) + '</label></li>');//.data('val',opt.val());
                     li.data('opt', opt);    // store a direct reference to option.
                     opt.data('li', li);    // store a direct reference to list item.
                     if (O.is_multi) li.prepend('<span><i></i></span>');

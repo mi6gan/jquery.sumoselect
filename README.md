@@ -181,6 +181,8 @@ The following settings are available now:
 
 - `selToText` `(function)` function that transforms selected option elements to the placeholder. Should return string: `function($selEls, isMulti){...; return transText; }`
 
+- `optToOutput`: `(function)`  function that transforms original option element to the list view (can be an html): `function($optEl){ ...; return textOrHtml; }`
+
 **The default settings are :**
 
 ```javascript
@@ -203,7 +205,8 @@ The following settings are available now:
     prefix: '',
     locale: ['OK', 'Cancel', 'Select All'],
     up: false,
-    selToText: null
+    selToText: null,
+    optToOutput: null
 }
 ```
 
