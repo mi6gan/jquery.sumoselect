@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
@@ -22,6 +22,21 @@
             window.searchSelAll = $('.search-box-open-up').SumoSelect({ csvDispCount: 3, selectAll:true, search: false, searchText:'Enter here.', up:true });
 
             window.groups_eg_g = $('.groups_eg_g').SumoSelect({selectAll:true, search:true });
+            window.selToText1 = $('.selToText1').SumoSelect({
+                selToText: function($optEls, isMulti){
+                    return $optEls.text().toUpperCase();
+                }
+            });
+            window.selToText2 = $('.selToText2').SumoSelect({
+                selToText: function($optEls, isMulti){
+                    var text = '';
+                    $optEls.each(function(i, el){
+                        text += ( $(el).text() + ((i==($optEls.length-1)) ? '' : '; ') );
+                    });
+                    return text;
+                }
+            });
+            //window.selToText2 = $('.selToText2').SumoSelect({ selToText: function($optEls, isMulti)})
         });
     </script>
     <style type="text/css">
@@ -406,23 +421,6 @@
        <option value="mitsubishi">Mitsubishi</option>
     </select>
 
-    <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-
 <select multiple="multiple" name="somename10" class="testselect10">
        <option value="volvo">Volvo</option>
        <option >Saab</option>
@@ -434,7 +432,6 @@
        <option selected="selected" value="hyundai">Hyundai</option>
        <option value="mitsubishi">Mitsubishi</option>
     </select>
-
 
 
  <table class="auto-style5">
@@ -468,27 +465,74 @@
                                 <input id="Button9" type="button" value="Toggle Enable disable" onclick="$('.testselect10')[0].sumo.disabled = !$('.testselect10')[0].sumo.disabled" />
                             </li>
                         </ul>
-                            <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
-    <br />  <br />
-    <br />
                     </td>
                     <td>
 
 </td>
                 </tr>
             </table>
+
+    <h1>With text display hooks</h1>
+    <p><b>Transform selected option to the uppercased text</b>
+    <pre>
+    $('select').SumoSelect({
+        selToText: function($optEls, isMulti){
+            return $optEls.text().toUpperCase();
+        }
+    });
+    </pre>
+    </p>
+    <select name="somename" class="selToText1" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
+        <option disabled="disabled" selected="selected">disabled selected</option>
+        <!--placeholder-->
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;
+    <br />
+    <br />
+    <br />  <br />
+    &nbsp;&nbsp;&nbsp;
+    <p><b>Use semi-colon to join multiple options</b>
+    <pre>
+    $('select').SumoSelect({
+        selToText: function($optEls, isMulti){
+            var text = '';
+            $optEls.each(function(i, el){
+                text += ( $(el).text() + ((i==($optEls.length-1)) ? '' : '; ') );
+            });
+            return text;
+        }
+    });
+    </pre>
+    </p>
+    <select name="somename" class="selToText2" multiple="multiple" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
+        <option disabled="disabled" selected="selected">disabled selected</option>
+        <!--placeholder-->
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;
+    <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
+    <br />  <br />
+    <br />
  
 </body>
 </html>

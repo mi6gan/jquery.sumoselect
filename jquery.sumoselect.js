@@ -33,7 +33,8 @@
             noMatch: 'No matches for "{0}"',
             prefix: '',                   // some prefix usually the field name. eg. '<b>Hello</b>'
             locale: ['OK', 'Cancel', 'Select All'],  // all text that is used. don't change the index.
-            up: false                     // set true to open upside.
+            up: false,                    // set true to open upside.
+            selToText: null               // function that transforms selected option elements to placeholder: function($selEls, isMulti){...}
         }, options);
 
         var ret = this.each(function () {
@@ -448,9 +449,11 @@
                 setText: function () {
                     var O = this;
                     O.placeholder = "";
-                    if (O.is_multi) {
+                    if(settings.selToText){
+                        O.placeholder = settings.selToText(O.E.find(':selected').not(':disabled'), O.is_multi);
+                    }
+                    else if (O.is_multi) {
                         sels = O.E.find(':selected').not(':disabled'); //selected options.
-
                         for (i = 0; i < sels.length; i++) {
                                 if (i + 1 >= settings.csvDispCount && settings.csvDispCount) {
                                     if (sels.length == O.E.find('option').length && settings.captionFormatAllSelected) {
@@ -479,7 +482,6 @@
                         if (!O.placeholder)                  //if placeholder is there then set it
                             O.placeholder = O.E.find('option:disabled:selected').text();
                     }
-
                     O.placeholder = O.placeholder ? (settings.prefix + ' ' + O.placeholder) : settings.placeholder
 
                     //set display text
