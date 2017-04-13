@@ -333,7 +333,7 @@
                         O.is_opened = false;
                         O.select.removeClass('open').find('ul li.sel').removeClass('sel');
                         $(document).off('click.sumo');
-                        O.select.focus();
+                        //O.select.focus();
                         $('body').removeClass('sumoStopScroll');
 
                         // clear the search
